@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.6.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0' // 명시적으로 Jupiter 지정
+
+    implementation 'org.springframework:spring-webmvc:5.3.24'
+
+    // JsonNode와 ObjectMapper 클래스를 포함합니다.
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
