@@ -18,7 +18,7 @@ import java.util.Map;
 public class MapDataServiceImpl implements MapDataService {
 
     // 서비스 URL 예시 - 기초생활인프라
-    private static final String BASE_SERVICE_URL = "https://gis.city.go.kr/arcgis/rest/services/ACC_INFRSTRCTR_POI_2025/MapServer/";
+    private static final String BASE_SERVICE_URL = "https://gis.city.go.kr/arcgis/rest/services/UR_ACTV_2024/MapServer/";
 
     @Override
     public List<Map<String, Object>> getArcGISFields(Map<String, Object> params) throws Exception {
