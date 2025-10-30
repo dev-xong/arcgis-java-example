@@ -80,7 +80,7 @@ public class MapDataServiceImpl implements MapDataService {
 
         String requestUrl = BASE_SERVICE_URL + layerIndex + "/query?f=json";
 
-        String queryBody = "where=1%3D1&outFields=*&returnGeometry=false";
+        String queryBody = "where=1%3D1&outFields=*&returnGeometry=true";
 
         HttpClient client = HttpClient.newHttpClient();
         ObjectMapper mapper = new ObjectMapper();
@@ -97,15 +97,25 @@ public class MapDataServiceImpl implements MapDataService {
         }
 
         JsonNode rootNode = mapper.readTree(response.body());
-
         JsonNode featuresNode = rootNode.path("features");
 
         List<Map<String, Object>> dataList = new ArrayList<>();
 
         if (featuresNode.isArray()) {
             for (JsonNode feature : featuresNode) {
+                Map<String, Object> dataMap = new HashMap<>();
+
+                // 일반 필드
                 JsonNode attributesNode = feature.path("attributes");
-                Map<String, Object> dataMap = mapper.convertValue(attributesNode, new TypeReference<Map<String, Object>>() {});
+                Map<String, Object> attributes = mapper.convertValue(attributesNode, new TypeReference<>() {});
+                dataMap.putAll(attributes);
+
+                // 지오메트리 정보
+                JsonNode geometryNode = feature.path("geometry");
+                if (!geometryNode.isMissingNode()) {
+                    dataMap.put("GEOMETRY", mapper.convertValue(geometryNode, new TypeReference<Map<String, Object>>() {}));
+                }
+
                 dataList.add(dataMap);
             }
         }
